@@ -147,3 +147,56 @@ export async function PATCH(
     );
   }
 }
+
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ path: string[] }> }
+) {
+  const resolvedParams = await params;
+  const path = resolvedParams.path.join('/');
+  const url = `${API_BASE_URL}${path}/`;
+
+  console.log('DELETE Request - URL:', url);
+
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+  };
+
+  const authHeader = request.headers.get('authorization');
+  console.log('DELETE Request - Auth Header:', authHeader ? 'Present' : 'Missing');
+  
+  if (authHeader) {
+    headers['Authorization'] = authHeader;
+  }
+
+  try {
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers,
+    });
+
+    console.log('DELETE Response - Status:', response.status);
+    
+    // Try to parse response, some endpoints return empty body
+    let data = {};
+    try {
+      const responseText = await response.text();
+      if (responseText) {
+        data = JSON.parse(responseText);
+      }
+    } catch (e) {
+      console.log('DELETE Response - No body or invalid JSON');
+    }
+    
+    console.log('DELETE Response - Data:', data);
+    
+    return NextResponse.json(data, { status: response.status });
+  } catch (error) {
+    console.error('DELETE Error:', error);
+    return NextResponse.json(
+      { error: 'Failed to delete data' },
+      { status: 500 }
+    );
+  }
+}

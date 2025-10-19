@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useAppSelector, useAppDispatch } from '@/lib/hook';
 import {
   useGetUserProfileQuery,
@@ -8,6 +9,7 @@ import {
   useLogoutMutation,
 } from '@/lib/features/auth/authApi';
 import { logout as logoutAction } from '@/lib/features/auth/authSlice';
+
 type ApiError = {
   data?: {
     message?: string;
@@ -16,6 +18,7 @@ type ApiError = {
   };
   status?: number;
 };
+
 export default function DashboardPage() {
   const { isAuthenticated, token } = useAppSelector((state) => state.auth);
   const router = useRouter();
@@ -23,7 +26,6 @@ export default function DashboardPage() {
   const [shouldFetch, setShouldFetch] = useState(false);
 
   useEffect(() => {
-    // Wait for authentication to load
     if (!isAuthenticated && !token) {
       router.push('/signin');
     } else if (isAuthenticated && token) {
@@ -67,24 +69,18 @@ export default function DashboardPage() {
       await refetch();
       setTimeout(() => setUpdateSuccess(false), 3000);
     } catch (err) {
-      console.error('Update error:', err);
-       const error = err as ApiError;
-      setUpdateError(error?.data?.message || error?.data?.error || 'Failed to update profile');
+      const error = err as ApiError;
+      setUpdateError(error?.data?.detail ?? error?.data?.message ?? error?.data?.error ?? 'Failed to update profile');
     }
   };
 
   const handleLogout = async () => {
     try {
-      console.log('Logging out...');
       await logoutMutation().unwrap();
-      console.log('Logout API call successful');
     } catch (err) {
-      console.error('Logout API error:', err);
-      // Continue with logout even if API call fails
+      console.error('Logout error:', err);
     } finally {
-      // Clear Redux state and localStorage
       dispatch(logoutAction());
-      console.log('Redirecting to home...');
       router.push('/');
     }
   };
@@ -158,28 +154,39 @@ export default function DashboardPage() {
                   Welcome back, {profile?.name || 'User'}!
                 </p>
               </div>
-              <button
-                onClick={handleLogout}
-                disabled={isLoggingOut}
-                className="px-4 py-2 bg-white text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
-              >
-                {isLoggingOut ? (
-                  <>
-                    <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <span>Logging out...</span>
-                  </>
-                ) : (
-                  <>
-                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                    </svg>
-                    <span>Logout</span>
-                  </>
-                )}
-              </button>
+              <div className="flex space-x-3">
+                <Link
+                  href="/chat"
+                  className="px-4 py-2 bg-white text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors font-medium flex items-center space-x-2"
+                >
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  </svg>
+                  <span>Chat</span>
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  disabled={isLoggingOut}
+                  className="px-4 py-2 bg-white text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+                >
+                  {isLoggingOut ? (
+                    <>
+                      <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      <span>Logging out...</span>
+                    </>
+                  ) : (
+                    <>
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                      </svg>
+                      <span>Logout</span>
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
           </div>
 

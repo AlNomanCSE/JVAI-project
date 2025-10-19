@@ -47,6 +47,60 @@ export interface UpdateUserProfileRequest {
   subscription_status?: string;
 }
 
+// Chat Types
+export interface CreateChatRequest {
+  model_name: string;
+  message_content: string;
+}
+
+export interface CreateChatResponse {
+  Message: string;
+  data: {
+    id: number;
+    owner: number;
+    title: string;
+    messages: any[];
+    timestamp: string;
+  };
+}
+
+export interface AddMessageRequest {
+  chat_id: number;
+  model_name: string;
+  message_content: string;
+}
+
+export interface Message {
+  id: number;
+  content: string;
+  sender: 'user' | 'bot';
+  created_at: string;
+}
+
+export interface Chat {
+  id: number;
+  title: string;
+  created_at: string;
+  updated_at: string;
+  model_name?: string;
+  last_message?: string;
+  owner?: number;
+  timestamp?: string;
+}
+
+export interface ChatContent {
+  id: number;
+  title: string;
+  messages: Message[];
+  model_name?: string;
+  owner?: number;
+  timestamp?: string;
+}
+
+export interface UpdateChatTitleRequest {
+  title: string;
+}
+
 export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: fetchBaseQuery({
@@ -60,7 +114,7 @@ export const authApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['UserProfile'],
+  tagTypes: ['UserProfile', 'ChatList', 'ChatContent'],
   endpoints: (builder) => ({
     signUp: builder.mutation<AuthResponse, SignUpRequest>({
       query: (credentials) => ({
@@ -94,6 +148,46 @@ export const authApi = createApi({
         method: 'POST',
       }),
     }),
+    // Chat Endpoints
+    createChat: builder.mutation<CreateChatResponse, CreateChatRequest>({
+      query: (data) => ({
+        url: 'chat/create_chat/',
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['ChatList'],
+    }),
+    addMessageToChat: builder.mutation<Message, AddMessageRequest>({
+      query: (data) => ({
+        url: 'chat/add_message_to_chat/',
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['ChatContent', 'ChatList'],
+    }),
+    getUserChatList: builder.query<Chat[], void>({
+      query: () => 'chat/get_users_chat_list/',
+      providesTags: ['ChatList'],
+    }),
+    getChatContent: builder.query<ChatContent, number>({
+      query: (chatId) => `chat/get_a_chat_content/${chatId}/`,
+      providesTags: ['ChatContent'],
+    }),
+    updateChatTitle: builder.mutation<Chat, { chatId: number; title: string }>({
+      query: ({ chatId, title }) => ({
+        url: `chat/update_chat_title/${chatId}/`,
+        method: 'PATCH',
+        body: { title },
+      }),
+      invalidatesTags: ['ChatList', 'ChatContent'],
+    }),
+    deleteChat: builder.mutation<void, number>({
+      query: (chatId) => ({
+        url: `chat/delete_chat/${chatId}/`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['ChatList'],
+    }),
   }),
 });
 
@@ -103,4 +197,10 @@ export const {
   useGetUserProfileQuery,
   useUpdateUserProfileMutation,
   useLogoutMutation,
+  useCreateChatMutation,
+  useAddMessageToChatMutation,
+  useGetUserChatListQuery,
+  useGetChatContentQuery,
+  useUpdateChatTitleMutation,
+  useDeleteChatMutation,
 } = authApi;
