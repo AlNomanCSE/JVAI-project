@@ -13,6 +13,38 @@ import {
 } from '@/lib/features/auth/authApi';
 import { logout as logoutAction } from '@/lib/features/auth/authSlice';
 
+// Local types for better type safety
+type ChatItem = {
+  id: number;
+  title: string;
+  owner?: number;
+  timestamp?: string;
+};
+
+type MessageItem = {
+  id: number;
+  message_content?: string;
+  content?: string;
+  text?: string;
+  sent_by?: string;
+  sender?: string;
+};
+
+type ChatListResponse = {
+  data?: ChatItem[];
+} | ChatItem[];
+
+type ChatContentResponse = {
+  data?: {
+    id: number;
+    title: string;
+    messages: MessageItem[];
+    owner?: number;
+    timestamp?: string;
+  };
+  messages?: MessageItem[];
+};
+
 export default function ChatPage() {
   const { isAuthenticated, token } = useAppSelector((state) => state.auth);
   const router = useRouter();
@@ -209,11 +241,12 @@ export default function ChatPage() {
               <h2 className="text-sm font-semibold text-gray-400 mb-2">Chat History</h2>
               {(() => {
                 // Handle different API response structures
-                const chats = chatList?.data || chatList || [];
+                const response = chatList as ChatListResponse;
+                const chats = (response && 'data' in response) ? response.data : response;
                 const chatArray = Array.isArray(chats) ? chats : [];
                 
                 if (chatArray.length > 0) {
-                  return chatArray.map((chat: any) => {
+                  return chatArray.map((chat: ChatItem) => {
                     const chatId = chat.id;
                     const chatTitle = chat.title || 'Untitled Chat';
                     
@@ -308,10 +341,11 @@ export default function ChatPage() {
                 <div className="max-w-3xl mx-auto space-y-6">
                   {(() => {
                     // Get messages from nested data structure
-                    const messages = chatContent.data?.messages || chatContent.messages || [];
+                    const response = chatContent as ChatContentResponse;
+                    const messages = response?.data?.messages || response?.messages || [];
                     
                     if (Array.isArray(messages) && messages.length > 0) {
-                      return messages.map((msg: any, index: number) => {
+                      return messages.map((msg: MessageItem, index: number) => {
                         // Handle the actual API format
                         const messageContent = msg.message_content || msg.content || msg.text || '';
                         const messageSender = msg.sent_by === 'user' ? 'user' : 'bot';

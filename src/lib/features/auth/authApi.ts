@@ -47,6 +47,17 @@ export interface UpdateUserProfileRequest {
   subscription_status?: string;
 }
 
+export interface Message {
+  id: number;
+  message_content: string;
+  sent_by: 'user' | 'bot';
+  model_name: string;
+  timestamp: string;
+  content?: string;  // Alternative field name
+  sender?: 'user' | 'bot';  // Alternative field name
+  created_at?: string;  // Alternative field name
+}
+
 // Chat Types
 export interface CreateChatRequest {
   model_name: string;
@@ -59,7 +70,7 @@ export interface CreateChatResponse {
     id: number;
     owner: number;
     title: string;
-    messages: any[];
+    messages: Message[];
     timestamp: string;
   };
 }
@@ -70,31 +81,35 @@ export interface AddMessageRequest {
   message_content: string;
 }
 
-export interface Message {
-  id: number;
-  content: string;
-  sender: 'user' | 'bot';
-  created_at: string;
-}
-
 export interface Chat {
   id: number;
   title: string;
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
   model_name?: string;
   last_message?: string;
   owner?: number;
   timestamp?: string;
 }
 
+export interface ChatListResponse {
+  data?: Chat[];
+}
+
 export interface ChatContent {
-  id: number;
-  title: string;
-  messages: Message[];
+  id?: number;
+  title?: string;
+  messages?: Message[];
   model_name?: string;
   owner?: number;
   timestamp?: string;
+  data?: {
+    id: number;
+    owner: number;
+    title: string;
+    messages: Message[];
+    timestamp: string;
+  };
 }
 
 export interface UpdateChatTitleRequest {
@@ -165,7 +180,7 @@ export const authApi = createApi({
       }),
       invalidatesTags: ['ChatContent', 'ChatList'],
     }),
-    getUserChatList: builder.query<Chat[], void>({
+    getUserChatList: builder.query<Chat[] | ChatListResponse, void>({
       query: () => 'chat/get_users_chat_list/',
       providesTags: ['ChatList'],
     }),
