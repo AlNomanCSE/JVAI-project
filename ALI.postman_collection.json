@@ -1,0 +1,1385 @@
+{
+	"info": {
+		"_postman_id": "7cb53c6b-d117-4831-b3de-627f51a7fbc0",
+		"name": "ALI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33353162",
+		"_collection_link": "https://teamofshuvo.postman.co/workspace/Team-Workspace~55881042-85c9-417e-8d87-cb66c5f9bb04/collection/33353162-7cb53c6b-d117-4831-b3de-627f51a7fbc0?action=share&source=collection_link&creator=33353162"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "SignUP",
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"jvaichatgpt111@gmail.com\",\n    \"password\": \"pP@11111\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/authentication_app/signup/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"authentication_app",
+								"signup",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"jvaichatgpt@gmail.com\",\n    \"password\": \"pP@11111\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/authentication_app/signup",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"authentication_app",
+										"signup"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "LogIN",
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"jvaichatgpt@gmail.com\",\n    \"password\": \"pP@11111\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/authentication_app/signin/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"authentication_app",
+								"signin",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"jvaichatgpt@gmail.com\",\n    \"password\": \"pP@11111\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/authentication_app/signin",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"authentication_app",
+										"signin"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Logout",
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{vault:authorization-secret}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/authentication_app/logout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"authentication_app",
+								"logout"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/authentication_app/logout",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"authentication_app",
+										"logout"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Get User Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var template = `",
+									"<style type=\"text/css\">",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+									"    .tftable tr {background-color:#ffffff;}",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+									"    .tftable tr:hover {background-color:#e0ffff;}",
+									"</style>",
+									"",
+									"<table class=\"tftable\" border=\"1\">",
+									"    <tr>",
+									"        <th>Field</th>",
+									"        <th>Value</th>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>id</td>",
+									"        <td>{{response.id}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>subscription_status</td>",
+									"        <td>{{response.subscription_status}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>subscription_started_on</td>",
+									"        <td>{{response.subscription_started_on}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>subscription_expires_on</td>",
+									"        <td>{{response.subscription_expires_on}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>created_at</td>",
+									"        <td>{{response.created_at}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>name</td>",
+									"        <td>{{response.name}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>is_individual</td>",
+									"        <td>{{response.is_individual}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>subscription_id</td>",
+									"        <td>{{response.subscription_id}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>number_of_allowed_members</td>",
+									"        <td>{{response.number_of_allowed_members}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>is_expired</td>",
+									"        <td>{{response.is_expired}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>active_refresh_token</td>",
+									"        <td>{{response.active_refresh_token}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>active_device_ip</td>",
+									"        <td>{{response.active_device_ip}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>is_verified</td>",
+									"        <td>{{response.is_verified}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>otp</td>",
+									"        <td>{{response.otp}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>user</td>",
+									"        <td>{{response.user}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>attached_management_account</td>",
+									"        <td>{{response.attached_management_account}}</td>",
+									"    </tr>",
+									"</table>",
+									"`;",
+									"",
+									"function constructVisualizerPayload() {",
+									"    return {response: pm.response.json()}",
+									"}",
+									"",
+									"pm.visualizer.set(template, constructVisualizerPayload());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQzNzU2NzAwLCJpYXQiOjE3NDI4OTI3MDAsImp0aSI6ImFmNDVmMTFhM2ZhYTRmYTU5MzY4OGMyZDBjYTAzYzlmIiwidXNlcl9pZCI6Mzl9.IV9woezS9Bf-nYxiU0cKGb_EWZpXG7dUpJEHXglb2yE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/authentication_app/user_profile",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"authentication_app",
+								"user_profile"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/authentication_app/user_profile",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"authentication_app",
+										"user_profile"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Update User Profile",
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{vault:authorization-secret}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"subscription_status\": \"free_trial\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/authentication_app/user_profile",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"authentication_app",
+								"user_profile"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"subscription_status\": \"free_trial\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/authentication_app/user_profile",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"authentication_app",
+										"user_profile"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Verify OTP",
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"\",\n    \"otp\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/authentication_app/verify_otp",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"authentication_app",
+								"verify_otp"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"\",\n    \"otp\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/authentication_app/verify_otp",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"authentication_app",
+										"verify_otp"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Resend OTP",
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"jvaichatgpt@gmail.com\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/authentication_app/resend_otp",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"authentication_app",
+								"resend_otp"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"jvaichatgpt@gmail.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/authentication_app/resend_otp",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"authentication_app",
+										"resend_otp"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			]
+		},
+		{
+			"name": "Settings",
+			"item": [
+				{
+					"name": "User Log",
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{vault:authorization-secret}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/authentication_app/settings/user_log",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"authentication_app",
+								"settings",
+								"user_log"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/authentication_app/settings/user_log",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"authentication_app",
+										"settings",
+										"user_log"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			]
+		},
+		{
+			"name": "Terms And Support",
+			"item": [
+				{
+					"name": "Get Terms",
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/terms_and_support/terms",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"terms_and_support",
+								"terms"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/terms_and_support/terms",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"terms_and_support",
+										"terms"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Send Support Request",
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@testemail.com\",\n    \"query\": \"I am facing some problem\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/terms_and_support/support",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"terms_and_support",
+								"support"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"test@testemail.com\",\n    \"query\": \"I am facing some problem\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/terms_and_support/support",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"terms_and_support",
+										"support"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			]
+		},
+		{
+			"name": "User Management",
+			"item": [
+				{
+					"name": "Get All Invited User",
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQzMzI5ODc3LCJpYXQiOjE3NDI0NjU4NzcsImp0aSI6IjcyOTBhZDNkMTdhODQ1YTg5ZDgyNzZhOTQ0MGFiNmI0IiwidXNlcl9pZCI6Mn0.mvFvmSPkXQD2ioR60eIxcDPjDtbax4cW0EEUzEti4yU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/company_user_management/user_list",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company_user_management",
+								"user_list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove User",
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer"
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/company_user_management/remove_user_from_company",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company_user_management",
+								"remove_user_from_company"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add User",
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQzNzU2NzAwLCJpYXQiOjE3NDI4OTI3MDAsImp0aSI6ImFmNDVmMTFhM2ZhYTRmYTU5MzY4OGMyZDBjYTAzYzlmIiwidXNlcl9pZCI6Mzl9.IV9woezS9Bf-nYxiU0cKGb_EWZpXG7dUpJEHXglb2yE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"sayduntuhin.sta@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/company_user_management/add_user",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company_user_management",
+								"add_user"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"sayduntuhin.sta@gmail.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/company_user_management/add_user",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"company_user_management",
+										"add_user"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			]
+		},
+		{
+			"name": "subscription",
+			"item": [
+				{
+					"name": "Buy  subscription",
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQzNzU2NzAwLCJpYXQiOjE3NDI4OTI3MDAsImp0aSI6ImFmNDVmMTFhM2ZhYTRmYTU5MzY4OGMyZDBjYTAzYzlmIiwidXNlcl9pZCI6Mzl9.IV9woezS9Bf-nYxiU0cKGb_EWZpXG7dUpJEHXglb2yE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"subscription_plan\": \"company\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/subscription/buy_subscription",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"subscription",
+								"buy_subscription"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"subscription_plan\": \"company\" //individual or company\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/subscription/buy_subscription",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"subscription",
+										"buy_subscription"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Update Company Account Subscription",
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQzNzU2NzAwLCJpYXQiOjE3NDI4OTI3MDAsImp0aSI6ImFmNDVmMTFhM2ZhYTRmYTU5MzY4OGMyZDBjYTAzYzlmIiwidXNlcl9pZCI6Mzl9.IV9woezS9Bf-nYxiU0cKGb_EWZpXG7dUpJEHXglb2yE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"quantity\": 15\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/subscription/update_subscription",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"subscription",
+								"update_subscription"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"quantity\": 15\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/subscription/update_subscription",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"subscription",
+										"update_subscription"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			]
+		},
+		{
+			"name": "Chat",
+			"item": [
+				{
+					"name": "Create Chat",
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUzOTYyMjAzLCJpYXQiOjE3NTMwOTgyMDMsImp0aSI6IjRlYzJiYjM2Zjk3OTQ0ODA4MTY4YjNhZDFhOTJmNjM4IiwidXNlcl9pZCI6NDd9.219JSsJqCGZn9KIc_hE_5PD2z5MErfT0VfKqPDhiDOk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/authentication_app/signup/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"authentication_app",
+								"signup",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Message To Chat",
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1NjgxMTQ4LCJpYXQiOjE3NDQ4MTcxNDgsImp0aSI6IjAxZmIxNzIxZmY5NTRmZjFiNzM2NzI1YjFhNDM2NTIzIiwidXNlcl9pZCI6MX0.DjLZA8v5NzMr-_r9L0lni2XiX5_dnj82jgwN43Kpmv0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "chat_id",
+									"value": "42",
+									"type": "text"
+								},
+								{
+									"key": "model_name",
+									"value": "Chartwright",
+									"type": "text"
+								},
+								{
+									"key": "message_content",
+									"value": "How much water should I drink?",
+									"type": "text"
+								},
+								{
+									"key": "attached_file",
+									"type": "file",
+									"src": "file:///home/khandakerzp/Downloads/1720261072.png",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/chat/add_message_to_chat",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"chat",
+								"add_message_to_chat"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get users chat list",
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1NjgxMTQ4LCJpYXQiOjE3NDQ4MTcxNDgsImp0aSI6IjAxZmIxNzIxZmY5NTRmZjFiNzM2NzI1YjFhNDM2NTIzIiwidXNlcl9pZCI6MX0.DjLZA8v5NzMr-_r9L0lni2XiX5_dnj82jgwN43Kpmv0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/chat/get_users_chat_list",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"chat",
+								"get_users_chat_list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get A Chat Content",
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1NjgxMTQ4LCJpYXQiOjE3NDQ4MTcxNDgsImp0aSI6IjAxZmIxNzIxZmY5NTRmZjFiNzM2NzI1YjFhNDM2NTIzIiwidXNlcl9pZCI6MX0.DjLZA8v5NzMr-_r9L0lni2XiX5_dnj82jgwN43Kpmv0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/chat/get_a_chat_content/40",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"chat",
+								"get_a_chat_content",
+								"40"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Chat Title",
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQzNzU2NzAwLCJpYXQiOjE3NDI4OTI3MDAsImp0aSI6ImFmNDVmMTFhM2ZhYTRmYTU5MzY4OGMyZDBjYTAzYzlmIiwidXNlcl9pZCI6Mzl9.IV9woezS9Bf-nYxiU0cKGb_EWZpXG7dUpJEHXglb2yE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Hi Shakil Vai\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/chat/update_chat_title/20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"chat",
+								"update_chat_title",
+								"20"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Chat",
+					"protocolProfileBehavior": {
+						"strictSSL": false,
+						"followRedirects": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1NjgxMTQ4LCJpYXQiOjE3NDQ4MTcxNDgsImp0aSI6IjAxZmIxNzIxZmY5NTRmZjFiNzM2NzI1YjFhNDM2NTIzIiwidXNlcl9pZCI6MX0.DjLZA8v5NzMr-_r9L0lni2XiX5_dnj82jgwN43Kpmv0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/chat/delete_chat/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"chat",
+								"delete_chat",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://143.198.132.106:8001"
+		}
+	]
+}

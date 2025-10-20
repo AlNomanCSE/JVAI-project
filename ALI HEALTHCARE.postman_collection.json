@@ -1,0 +1,457 @@
+{
+	"info": {
+		"_postman_id": "c7aabe7f-227d-4400-bfb4-7206ab849504",
+		"name": "ALI HEALTHCARE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33353162",
+		"_collection_link": "https://teamofshuvo.postman.co/workspace/Team-Workspace~55881042-85c9-417e-8d87-cb66c5f9bb04/collection/33353162-c7aabe7f-227d-4400-bfb4-7206ab849504?action=share&source=collection_link&creator=33353162"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "SignUP",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"jvaichatgpt@gmail.com\",\n    \"password\": \"pP@11111\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}authentication_app/signup/",
+							"host": [
+								"{{base_url}}authentication_app"
+							],
+							"path": [
+								"signup",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LogIN",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"jvaichatgpt@gmail.com\",\n    \"password\": \"pP@11111\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}authentication_app/signin/",
+							"host": [
+								"{{base_url}}authentication_app"
+							],
+							"path": [
+								"signin",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{vault:authorization-secret}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}authentication_app/logout/",
+							"host": [
+								"{{base_url}}authentication_app"
+							],
+							"path": [
+								"logout",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var template = `",
+									"<style type=\"text/css\">",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+									"    .tftable tr {background-color:#ffffff;}",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+									"    .tftable tr:hover {background-color:#e0ffff;}",
+									"</style>",
+									"",
+									"<table class=\"tftable\" border=\"1\">",
+									"    <tr>",
+									"        <th>Field</th>",
+									"        <th>Value</th>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>id</td>",
+									"        <td>{{response.id}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>subscription_status</td>",
+									"        <td>{{response.subscription_status}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>subscription_started_on</td>",
+									"        <td>{{response.subscription_started_on}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>subscription_expires_on</td>",
+									"        <td>{{response.subscription_expires_on}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>created_at</td>",
+									"        <td>{{response.created_at}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>name</td>",
+									"        <td>{{response.name}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>is_individual</td>",
+									"        <td>{{response.is_individual}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>subscription_id</td>",
+									"        <td>{{response.subscription_id}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>number_of_allowed_members</td>",
+									"        <td>{{response.number_of_allowed_members}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>is_expired</td>",
+									"        <td>{{response.is_expired}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>active_refresh_token</td>",
+									"        <td>{{response.active_refresh_token}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>active_device_ip</td>",
+									"        <td>{{response.active_device_ip}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>is_verified</td>",
+									"        <td>{{response.is_verified}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>otp</td>",
+									"        <td>{{response.otp}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>user</td>",
+									"        <td>{{response.user}}</td>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>attached_management_account</td>",
+									"        <td>{{response.attached_management_account}}</td>",
+									"    </tr>",
+									"</table>",
+									"`;",
+									"",
+									"function constructVisualizerPayload() {",
+									"    return {response: pm.response.json()}",
+									"}",
+									"",
+									"pm.visualizer.set(template, constructVisualizerPayload());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{vault:authorization-secret}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}authentication_app/user_profile/",
+							"host": [
+								"{{base_url}}authentication_app"
+							],
+							"path": [
+								"user_profile",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{vault:authorization-secret}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"subscription_status\": \"free_trial\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}authentication_app/user_profile/",
+							"host": [
+								"{{base_url}}authentication_app"
+							],
+							"path": [
+								"user_profile",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Settings",
+			"item": [
+				{
+					"name": "User Log",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{vault:authorization-secret}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}authentication_app/settings/user_log/",
+							"host": [
+								"{{base_url}}authentication_app"
+							],
+							"path": [
+								"settings",
+								"user_log",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Terms And Support",
+			"item": [
+				{
+					"name": "Get Terms",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}terms_and_support/terms/",
+							"host": [
+								"{{base_url}}terms_and_support"
+							],
+							"path": [
+								"terms",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Support Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@testemail.com\",\n    \"query\": \"I am facing some problem\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}terms_and_support/support/",
+							"host": [
+								"{{base_url}}terms_and_support"
+							],
+							"path": [
+								"support",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Management",
+			"item": []
+		},
+		{
+			"name": "subscription",
+			"item": [
+				{
+					"name": "Buy  subscription",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{vault:authorization-secret}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"subscription_plan\": \"company\" //individual or company\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}subscription/buy_subscription/",
+							"host": [
+								"{{base_url}}subscription"
+							],
+							"path": [
+								"buy_subscription",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Company Account Subscription",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{vault:authorization-secret}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"quantity\": 15\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}subscription/update_subscription/",
+							"host": [
+								"{{base_url}}subscription"
+							],
+							"path": [
+								"update_subscription",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://192.168.20.201:8111/"
+		}
+	]
+}
