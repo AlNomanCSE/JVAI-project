@@ -48,15 +48,21 @@ export default function ChatPage() {
   }, [isAuthenticated, token, router]);
 
   useEffect(() => {
+    console.log('===== CHAT LIST DEBUG =====');
+    console.log('Full chatList:', JSON.stringify(chatList, null, 2));
+    console.log('Is array?', Array.isArray(chatList));
+    if (chatList) {
+      console.log('Chat list length:', Array.isArray(chatList) ? chatList.length : 'Not an array');
+    }
+    console.log('============================');
+  }, [chatList]);
+
+  useEffect(() => {
     console.log('===== CHAT CONTENT DEBUG =====');
     console.log('Full chatContent:', JSON.stringify(chatContent, null, 2));
     console.log('chatContent exists?', !!chatContent);
-    console.log('chatContent.messages:', chatContent?.messages);
-    console.log('Is messages an array?', Array.isArray(chatContent?.messages));
-    console.log('Messages length:', chatContent?.messages?.length);
-    if (chatContent?.messages && chatContent.messages.length > 0) {
-      console.log('First message:', JSON.stringify(chatContent.messages[0], null, 2));
-    }
+    const messages = chatContent?.data?.messages || chatContent?.messages || [];
+    console.log('Messages found:', messages.length);
     console.log('==============================');
   }, [chatContent]);
 
@@ -106,15 +112,24 @@ export default function ChatPage() {
   };
 
   const handleDeleteChat = async (chatId: number) => {
-    if (confirm('Are you sure you want to delete this chat?')) {
-      try {
-        await deleteChat(chatId).unwrap();
-        if (selectedChatId === chatId) {
-          setSelectedChatId(null);
-        }
-      } catch (error) {
-        console.error('Failed to delete chat:', error);
+    const confirmed = window.confirm('Are you sure you want to delete this chat? This action cannot be undone.');
+    
+    if (!confirmed) return;
+
+    try {
+      console.log('Deleting chat:', chatId);
+      await deleteChat(chatId).unwrap();
+      console.log('Chat deleted successfully');
+      
+      // If the deleted chat was selected, clear selection
+      if (selectedChatId === chatId) {
+        setSelectedChatId(null);
       }
+      
+      // Show success feedback (optional - you can add a toast notification here)
+    } catch (error) {
+      console.error('Failed to delete chat:', error);
+      alert('Failed to delete chat. Please try again.');
     }
   };
 
@@ -185,72 +200,92 @@ export default function ChatPage() {
           </div>
 
           {isLoadingChats ? (
-            <div className="text-center text-gray-400">Loading chats...</div>
+            <div className="text-center text-gray-400 py-8">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
+              <p className="text-sm">Loading chats...</p>
+            </div>
           ) : (
             <div className="space-y-2">
-              <h2 className="text-sm font-semibold text-gray-400 mb-2">Today</h2>
-              {chatList && Array.isArray(chatList) && chatList.length > 0 ? (
-                chatList.map((chat) => (
-                  <div
-                    key={chat.id}
-                    className={`group relative p-3 rounded-lg cursor-pointer transition-colors ${
-                      selectedChatId === chat.id
-                        ? 'bg-gray-700'
-                        : 'hover:bg-gray-700'
-                    }`}
-                    onClick={() => setSelectedChatId(chat.id)}
-                  >
-                    {isRenamingChat === chat.id ? (
-                      <input
-                        type="text"
-                        value={newChatTitle}
-                        onChange={(e) => setNewChatTitle(e.target.value)}
-                        onKeyPress={(e) => {
-                          if (e.key === 'Enter') handleRenameChat(chat.id);
-                        }}
-                        onBlur={() => setIsRenamingChat(null)}
-                        className="w-full bg-gray-600 text-white px-2 py-1 rounded"
-                        autoFocus
-                      />
-                    ) : (
-                      <>
-                        <div className="text-white text-sm">{chat.title || 'Untitled Chat'}</div>
-                        <div className="flex items-center justify-end space-x-1 opacity-0 group-hover:opacity-100 transition-opacity absolute right-2 top-2">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setIsRenamingChat(chat.id);
-                              setNewChatTitle(chat.title || '');
+              <h2 className="text-sm font-semibold text-gray-400 mb-2">Chat History</h2>
+              {(() => {
+                // Handle different API response structures
+                const chats = chatList?.data || chatList || [];
+                const chatArray = Array.isArray(chats) ? chats : [];
+                
+                if (chatArray.length > 0) {
+                  return chatArray.map((chat: any) => {
+                    const chatId = chat.id;
+                    const chatTitle = chat.title || 'Untitled Chat';
+                    
+                    return (
+                      <div
+                        key={chatId}
+                        className={`group relative p-3 rounded-lg cursor-pointer transition-colors ${
+                          selectedChatId === chatId
+                            ? 'bg-gray-700'
+                            : 'hover:bg-gray-700'
+                        }`}
+                        onClick={() => setSelectedChatId(chatId)}
+                      >
+                        {isRenamingChat === chatId ? (
+                          <input
+                            type="text"
+                            value={newChatTitle}
+                            onChange={(e) => setNewChatTitle(e.target.value)}
+                            onKeyPress={(e) => {
+                              if (e.key === 'Enter') handleRenameChat(chatId);
                             }}
-                            className="p-1 hover:bg-gray-600 rounded"
-                            title="Rename"
-                          >
-                            <svg className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                            </svg>
-                          </button>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDeleteChat(chat.id);
-                            }}
-                            className="p-1 hover:bg-gray-600 rounded"
-                            title="Delete"
-                          >
-                            <svg className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
-                          </button>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                ))
-              ) : (
-                <div className="text-center text-gray-500 text-sm py-4">
-                  No chats yet. Create one to get started!
-                </div>
-              )}
+                            onBlur={() => setIsRenamingChat(null)}
+                            className="w-full bg-gray-600 text-white px-2 py-1 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            autoFocus
+                          />
+                        ) : (
+                          <>
+                            <div className="text-white text-sm pr-16">{chatTitle}</div>
+                            <div className="flex items-center justify-end space-x-1 opacity-0 group-hover:opacity-100 transition-opacity absolute right-2 top-2">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setIsRenamingChat(chatId);
+                                  setNewChatTitle(chatTitle);
+                                }}
+                                className="p-1.5 hover:bg-gray-600 rounded transition-colors"
+                                title="Rename chat"
+                              >
+                                <svg className="h-4 w-4 text-gray-400 hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                </svg>
+                              </button>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleDeleteChat(chatId);
+                                }}
+                                className="p-1.5 hover:bg-red-600 rounded transition-colors"
+                                title="Delete chat"
+                              >
+                                <svg className="h-4 w-4 text-gray-400 hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                              </button>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    );
+                  });
+                } else {
+                  return (
+                    <div className="text-center text-gray-500 text-sm py-8 px-4">
+                      <svg className="h-12 w-12 mx-auto mb-3 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                      </svg>
+                      <p>No chats yet</p>
+                      <p className="text-xs mt-1 text-gray-600">Start a conversation below!</p>
+                    </div>
+                  );
+                }
+              })()}
             </div>
           )}
         </div>
