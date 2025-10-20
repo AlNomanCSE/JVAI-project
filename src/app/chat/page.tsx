@@ -20,7 +20,15 @@ type ChatItem = {
   owner?: number;
   timestamp?: string;
 };
-
+type ApiErrorResponse = {
+  status?: number;
+  data?: {
+    message?: string;
+    detail?: string;
+    error?: string;
+  };
+  error?: string;
+};
 type MessageItem = {
   id: number;
   message_content?: string;
@@ -108,30 +116,49 @@ export default function ChatPage() {
           model_name: modelName,
           message_content: message,
         }).unwrap();
-        
+
         console.log('Create chat result:', result);
         const newChatId = result.data.id;
-        
-        // Generate title from first message
-        const chatTitle = message.length > 50 
-          ? message.substring(0, 50) + '...' 
-          : message;
-        
+
+        // Generate title from first message - sanitize and limit length
+        let chatTitle = message.trim();
+
+        // Remove line breaks and extra spaces
+        chatTitle = chatTitle.replace(/\s+/g, ' ');
+
+        // Limit to 40 characters (safer limit)
+        if (chatTitle.length > 40) {
+          chatTitle = chatTitle.substring(0, 40).trim() + '...';
+        }
+
         console.log('Attempting to rename chat to:', chatTitle);
-        
+
         // Wait a bit for chat to be fully created, then rename
         setTimeout(async () => {
           try {
-            const renameResult = await updateChatTitle({ 
-              chatId: newChatId, 
-              title: chatTitle 
+            // Validate title before sending
+            if (!chatTitle || chatTitle.length === 0 || chatTitle.length > 100) {
+              console.log('Invalid title length, skipping rename');
+              return;
+            }
+
+            console.log('Renaming chat ID:', newChatId, 'to title:', chatTitle);
+            const renameResult = await updateChatTitle({
+              chatId: newChatId,
+              title: chatTitle
             }).unwrap();
             console.log('Chat renamed successfully:', renameResult);
           } catch (err) {
-            console.error('Could not update chat title:', err);
+            const error = err as ApiErrorResponse;
+            console.error('Could not update chat title:', error);
+            console.error('Error details:', {
+              status: error?.status,
+              data: error?.data,
+              error: error?.error
+            });
           }
         }, 500);
-        
+
         setSelectedChatId(newChatId);
         setMessage('');
       } else {
@@ -168,19 +195,19 @@ export default function ChatPage() {
 
   const handleDeleteChat = async (chatId: number) => {
     const confirmed = window.confirm('Are you sure you want to delete this chat? This action cannot be undone.');
-    
+
     if (!confirmed) return;
 
     try {
       console.log('Deleting chat:', chatId);
       await deleteChat(chatId).unwrap();
       console.log('Chat deleted successfully');
-      
+
       // If the deleted chat was selected, clear selection
       if (selectedChatId === chatId) {
         setSelectedChatId(null);
       }
-      
+
       // Show success feedback (optional - you can add a toast notification here)
     } catch (error) {
       console.error('Failed to delete chat:', error);
@@ -221,18 +248,17 @@ export default function ChatPage() {
               </svg>
             </button>
           </div>
-          
+
           {/* Model Selection */}
           <div className="grid grid-cols-2 gap-2">
             {['Chartwright', 'TranscriptX', 'Redactify', 'Validify'].map((model) => (
               <button
                 key={model}
                 onClick={() => setModelName(model)}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  modelName === model
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${modelName === model
                     ? 'bg-blue-600 text-white'
                     : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                }`}
+                  }`}
               >
                 {model}
               </button>
@@ -267,23 +293,22 @@ export default function ChatPage() {
                 const response = chatList as ChatListResponse;
                 const chats = (response && 'data' in response) ? response.data : response;
                 const chatArray = Array.isArray(chats) ? chats : [];
-                
+
                 if (chatArray.length > 0) {
                   return chatArray.map((chat: ChatItem) => {
                     const chatId = chat.id;
                     // Use the title from API, or show a better placeholder
-                    const chatTitle = chat.title && chat.title !== 'Untitled Chat' 
-                      ? chat.title 
+                    const chatTitle = chat.title && chat.title !== 'Untitled Chat'
+                      ? chat.title
                       : 'New Conversation';
-                    
+
                     return (
                       <div
                         key={chatId}
-                        className={`group relative p-3 rounded-lg cursor-pointer transition-colors ${
-                          selectedChatId === chatId
+                        className={`group relative p-3 rounded-lg cursor-pointer transition-colors ${selectedChatId === chatId
                             ? 'bg-gray-700'
                             : 'hover:bg-gray-700'
-                        }`}
+                          }`}
                         onClick={() => setSelectedChatId(chatId)}
                       >
                         {isRenamingChat === chatId ? (
@@ -369,19 +394,18 @@ export default function ChatPage() {
                     // Get messages from nested data structure
                     const response = chatContent as ChatContentResponse;
                     const messages = response?.data?.messages || response?.messages || [];
-                    
+
                     if (Array.isArray(messages) && messages.length > 0) {
                       return messages.map((msg: MessageItem, index: number) => {
                         // Handle the actual API format
                         const messageContent = msg.message_content || msg.content || msg.text || '';
                         const messageSender = msg.sent_by === 'user' ? 'user' : 'bot';
                         const messageId = msg.id || index;
-                        
+
                         return (
                           <div key={messageId} className="flex items-start space-x-3">
-                            <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-                              messageSender === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-700 text-white'
-                            }`}>
+                            <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${messageSender === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-700 text-white'
+                              }`}>
                               {messageSender === 'user' ? 'U' : 'AI'}
                             </div>
                             <div className="flex-1">
@@ -436,7 +460,7 @@ export default function ChatPage() {
               </svg>
               <h2 className="text-2xl font-bold mb-2 text-white">Welcome to AI Healthcare Chat</h2>
               <p className="text-gray-500 mb-6">Start a conversation with our AI models</p>
-              
+
               <div className="bg-gray-800 rounded-lg p-6 text-left">
                 <h3 className="text-lg font-semibold text-white mb-3">How to get started:</h3>
                 <ol className="space-y-2 text-sm text-gray-400">
