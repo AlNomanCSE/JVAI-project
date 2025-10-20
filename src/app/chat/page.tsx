@@ -103,16 +103,39 @@ export default function ChatPage() {
 
     try {
       if (!selectedChatId) {
+        // Create chat first
         const result = await createChat({
           model_name: modelName,
           message_content: message,
         }).unwrap();
         
         console.log('Create chat result:', result);
-        // The ID is nested in result.data.id
-        setSelectedChatId(result.data.id);
+        const newChatId = result.data.id;
+        
+        // Generate title from first message
+        const chatTitle = message.length > 50 
+          ? message.substring(0, 50) + '...' 
+          : message;
+        
+        console.log('Attempting to rename chat to:', chatTitle);
+        
+        // Wait a bit for chat to be fully created, then rename
+        setTimeout(async () => {
+          try {
+            const renameResult = await updateChatTitle({ 
+              chatId: newChatId, 
+              title: chatTitle 
+            }).unwrap();
+            console.log('Chat renamed successfully:', renameResult);
+          } catch (err) {
+            console.error('Could not update chat title:', err);
+          }
+        }, 500);
+        
+        setSelectedChatId(newChatId);
         setMessage('');
       } else {
+        // Add message to existing chat
         await addMessage({
           chat_id: selectedChatId,
           model_name: modelName,
@@ -248,7 +271,10 @@ export default function ChatPage() {
                 if (chatArray.length > 0) {
                   return chatArray.map((chat: ChatItem) => {
                     const chatId = chat.id;
-                    const chatTitle = chat.title || 'Untitled Chat';
+                    // Use the title from API, or show a better placeholder
+                    const chatTitle = chat.title && chat.title !== 'Untitled Chat' 
+                      ? chat.title 
+                      : 'New Conversation';
                     
                     return (
                       <div
