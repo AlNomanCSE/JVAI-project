@@ -405,23 +405,14 @@ This project was created for the JVAI React.js Developer position technical asse
 
 ## 👨‍💻 Author
 
-**Developed by:** [Your Name]
+**Developed by:** ABD Noman
 **Date:** October 2025
 **Purpose:** JVAI Technical Assessment
 
 ## 🙏 Acknowledgments
 
 - Join Venture AI (JVAI) for the opportunity
-- Next.js team for the excellent framework
-- Redux team for Redux Toolkit and RTK Query
-- Tailwind CSS for the utility-first CSS framework
 
-## 📞 Support
-
-For questions or issues:
-1. Check the troubleshooting section
-2. Review API logs in browser console
-3. Contact the development team
 
 ---
 
